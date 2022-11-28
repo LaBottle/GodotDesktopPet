@@ -13,6 +13,8 @@ __meta__ = {
 }
 
 [node name="AnimatedSprite" parent="Pet" index="0"]
-frame = 6
+position = Vector2( 1, 0 )
+animation = "idle"
+frame = 0
 
 [editable path="Pet"]
