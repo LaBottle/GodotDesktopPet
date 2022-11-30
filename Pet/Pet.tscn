@@ -18,9 +18,7 @@
 [ext_resource path="res://Assets/white_walk_8fps/7.png" type="Texture" id=16]
 [ext_resource path="res://Assets/white_walk_8fps/4.png" type="Texture" id=17]
 [ext_resource path="res://Assets/white_drug&fall/1.png" type="Texture" id=18]
-[ext_resource path="res://Assets/white_land_8fps/0.png" type="Texture" id=19]
 [ext_resource path="res://Assets/white_drug&fall/2.png" type="Texture" id=20]
-[ext_resource path="res://Assets/white_land_8fps/1.png" type="Texture" id=21]
 [ext_resource path="res://Assets/white_run_8fps/8.png" type="Texture" id=22]
 [ext_resource path="res://Assets/white_run_8fps/2.png" type="Texture" id=23]
 [ext_resource path="res://Assets/white_run_8fps/5.png" type="Texture" id=24]
@@ -31,6 +29,8 @@
 [ext_resource path="res://Assets/white_run_8fps/4.png" type="Texture" id=29]
 [ext_resource path="res://Assets/white_run_8fps/1.png" type="Texture" id=30]
 [ext_resource path="res://Assets/white_run_8fps/7.png" type="Texture" id=31]
+[ext_resource path="res://Assets/white_land_8fps/0_1.png" type="Texture" id=32]
+[ext_resource path="res://Assets/white_land_8fps/1_1.png" type="Texture" id=33]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -44,7 +44,7 @@ animations = [ {
 "name": "idle",
 "speed": 4.0
 }, {
-"frames": [ ExtResource( 19 ), ExtResource( 21 ) ],
+"frames": [ ExtResource( 32 ), ExtResource( 33 ) ],
 "loop": false,
 "name": "land",
 "speed": 8.0
@@ -62,7 +62,7 @@ animations = [ {
 "frames": [ ExtResource( 12 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 17 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ) ],
 "loop": true,
 "name": "walk",
-"speed": 4.0
+"speed": 3.0
 } ]
 
 [sub_resource type="Animation" id=3]
@@ -307,6 +307,7 @@ tracks/1/keys = {
 }
 
 [node name="Pet" type="AnimatedSprite"]
+position = Vector2( 0, -7 )
 frames = SubResource( 2 )
 animation = "idle"
 frame = 1
