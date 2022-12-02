@@ -21,12 +21,14 @@ const jump_speed := 200
 var screen_size := OS.get_screen_size()
 const window_size := Vector2(135, 95)
 const window_size_on_wall := Vector2(65, 115)
+const window_size_popup := Vector2(135,120)
 var gravity :float = ProjectSettings.get("physics/2d/default_gravity")
 
 #variable
 var state setget set_state
 var action setget set_action
 var action_on_wall setget set_action_on_wall
+var mood setget change_mood, get_mood
 var velocity := Vector2.ZERO
 var click_pos := Vector2.ZERO
 var direction := 1
@@ -41,7 +43,7 @@ func _ready() -> void:
 	self.mood = 40 #happy
 
 func _physics_process(delta: float) -> void:
-	print(velocity)
+#	print(velocity)
 	match self.state:
 		State.DRAGGING:
 			if OS.window_position.x + get_global_mouse_position().x <= 1:
@@ -113,6 +115,7 @@ func set_state(new_state) -> void:
 			if state != State.ACTION_ON_WALL:
 				animation_player.play("release")
 		State.DRAGGING:
+			change_mood(mood - 5)
 			velocity = Vector2.ZERO
 			click_pos = get_local_mouse_position()
 			animation_player.play("drag")
@@ -192,10 +195,11 @@ func set_action_on_wall(new_action_on_wall) -> void:
 
 func get_mood() -> int:
 	return mood
-	
+
 func change_mood(newmood) -> void:
+	print("mood")
 	mood = newmood
-	if mood == 20:
+	if mood > 20:
 		pop_window(3,"happy")
 	elif mood == 0:
 		pop_window(3,"sad")
@@ -212,9 +216,9 @@ func pop_window(time,keyword) -> void:
 		"angry":
 			expression_frame = 15
 			
-	get_viewport().size = Vector2(135,120)
-	OS.window_position.y -=  25
-	get_parent().get_node("Pet").position.y += 25 
+	get_viewport().size = window_size_popup	
+	print(get_viewport_rect().size)
+	get_parent().get_node("Pet").position = Vector2(67,72) 
 	expression_timer.start(time)
 	expression_sprite.frame = expression_frame
 	expression_sprite.visible = true
@@ -252,3 +256,11 @@ func _on_ActionOnWallSwitchTimer_timeout() -> void:
 				self.action_on_wall = ActionOnWall.JUMP
 			else:
 				self.action_on_wall = ActionOnWall.CLIMB
+
+
+func _on_expression_timer_timeout() -> void:
+	expression_sprite.visible = false
+	get_viewport().size = window_size
+#	OS.window_position.y +=  25
+	get_parent().get_node("Pet").position = Vector2(67,47) 
+	pass # Replace with function body.
