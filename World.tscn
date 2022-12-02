@@ -7,9 +7,14 @@
 script = ExtResource( 2 )
 
 [node name="Pet" parent="." instance=ExtResource( 1 )]
-position = Vector2( 58, 35 )
+position = Vector2( 69, 44 )
 __meta__ = {
 "_edit_group_": true
 }
+
+[node name="Expression" parent="Pet" index="2"]
+visible = false
+
+[connection signal="timeout" from="Pet/Expression/ExpressionTimer" to="Pet" method="_on_ExpressionTimer_timeout"]
 
 [editable path="Pet"]

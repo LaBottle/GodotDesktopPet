@@ -2,10 +2,12 @@ extends AnimatedSprite
 
 onready var animation_player: AnimationPlayer = $AnimationPlayer
 onready var action_switch_timer: Timer = $ActionSwitchTimer
+onready var expression_sprite :Sprite = $Expression
+onready var expression_timer :Timer = $Expression/ExpressionTimer
 
 enum State {RELEASED, DRAGGING, ACTION}
 enum Action {IDLE, WALK, RUN}
-
+enum Mood {HAPPY, SAD, ANGRY}
 
 #constant
 const walk_speed := 200
@@ -18,6 +20,7 @@ var gravity :float = ProjectSettings.get("physics/2d/default_gravity")
 #variable
 var state setget set_state, get_state
 var action setget set_action, get_action
+var mood setget change_mood, get_mood
 var velocity := Vector2.ZERO
 var click_pos := Vector2.ZERO
 var direction = 1
@@ -25,10 +28,11 @@ var direction = 1
 func _ready() -> void:
 	randomize()
 	self.state = State.RELEASED
+	self.mood = 40 #happy
 
 
 func _physics_process(delta: float) -> void:
-	print(action_switch_timer.time_left)
+#	print(action_switch_timer.time_left)
 	match self.state:
 		State.DRAGGING:
 			#TO RELEASED
@@ -43,7 +47,7 @@ func _physics_process(delta: float) -> void:
 			if Input.is_action_just_pressed("click"):
 				self.state = State.DRAGGING
 			#TO ACTION
-			elif OS.window_position.y + 75 >= screen_size.y:
+			elif OS.window_position.y + 90 >= screen_size.y:
 				self.state = State.ACTION
 			else:
 				velocity.y += gravity * delta
@@ -80,16 +84,17 @@ func set_state(new_state) -> void:
 		State.RELEASED:
 			animation_player.play("release")
 		State.DRAGGING:
+			change_mood(mood-5)
 			action_switch_timer.stop()
 			velocity = Vector2.ZERO
 			click_pos = get_local_mouse_position()
 			animation_player.play("drag")
 		State.ACTION:
-			OS.window_position.y = screen_size.y - 75
+			change_mood(mood+5)
+			OS.window_position.y = screen_size.y - 90
 			velocity.y = 0
 			animation_player.play("land") # will set action to idle
 
-			
 func get_state() -> int:
 	return state
 	
@@ -125,8 +130,47 @@ func set_action(new_action) -> void:
 func get_action() -> int:
 	return action
 
+func get_mood() -> int:
+	return mood
+	
+func change_mood(newmood) -> void:
+	mood = newmood
+	if mood == 20:
+		pop_window(3,"happy")
+	elif mood == 0:
+		pop_window(3,"sad")
+#	else:
+#		pop_window(3,"angry")
+
+func pop_window(time,keyword) -> void:
+	var expression_frame :int
+	match keyword: 
+		"happy":
+			expression_frame = 13
+		"sad":
+			expression_frame = 14
+		"angry":
+			expression_frame = 15
+			
+	get_viewport().size = Vector2(135,120)
+	OS.window_position.y -=  25
+	get_parent().get_node("Pet").position.y += 25 
+	expression_timer.start(time)
+	expression_sprite.frame = expression_frame
+	expression_sprite.visible = true
+
+
+
 func _on_ActionSwitchTimer_timeout() -> void:
 	var next_action = randi() % (Action.size() - 1)
 	if next_action >= action:
 		next_action += 1
 	self.action = next_action
+
+
+func _on_ExpressionTimer_timeout() -> void:
+	expression_sprite.visible = false
+	get_viewport().size = Vector2(135,95)
+	OS.window_position.y +=  25
+	get_parent().get_node("Pet").position.y -= 25 
+	pass # Replace with function body.
