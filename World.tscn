@@ -7,7 +7,7 @@
 script = ExtResource( 2 )
 
 [node name="Pet" parent="." instance=ExtResource( 1 )]
-position = Vector2( 69, 44 )
+position = Vector2( 67, 47 )
 __meta__ = {
 "_edit_group_": true
 }
