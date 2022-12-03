@@ -28,16 +28,17 @@ var velocity := Vector2.ZERO
 var click_pos := Vector2.ZERO
 var direction := 1
 
-enum Wall {NOT=0, LEFT=-1, RIGHT=1}
+enum Wall { NOT=0, LEFT=-1, RIGHT=1 }
 var on_wall = Wall.NOT
 
 
 func _ready() -> void:
 	randomize()
+	get_tree().connect("files_dropped", self, "_on_file_drag")
 	self.state = State.RELEASED
 
 func _physics_process(delta: float) -> void:
-	print(velocity)
+	#print(velocity)
 	match self.state:
 		State.DRAGGING:
 			if OS.window_position.x + get_global_mouse_position().x <= 1:
@@ -101,7 +102,7 @@ func set_state(new_state) -> void:
 			action_switch_timer.stop()
 		State.ACTION_ON_WALL:
 			action_on_wall_switch_timer.stop()
-			get_viewport_rect().size = window_size
+			get_viewport().size = window_size
 			get_parent().get_node("Pet").position = Vector2(67, 47)
 
 	match new_state:
@@ -118,7 +119,7 @@ func set_state(new_state) -> void:
 				velocity.y = 0
 				animation_player.play("land") # will set action to idle
 		State.ACTION_ON_WALL:
-			get_viewport_rect().size = window_size_on_wall
+			get_viewport().size = window_size_on_wall
 			get_parent().get_node("Pet").position = Vector2(32, 58)
 			match on_wall:
 				Wall.LEFT:
@@ -140,7 +141,7 @@ func set_action(new_action) -> void:
 	match new_action:
 		Action.IDLE:
 			velocity = Vector2.ZERO
-			action_switch_timer.start(1 + 2 * randf()) # 1 ~ 3
+			action_switch_timer.start(4 + 2 * randf()) # 4 ~ 6
 			animation_player.play("idle")
 		Action.WALK:
 			if randi() % 2 > 0:
@@ -217,3 +218,15 @@ func _on_ActionOnWallSwitchTimer_timeout() -> void:
 				self.action_on_wall = ActionOnWall.JUMP
 			else:
 				self.action_on_wall = ActionOnWall.CLIMB
+
+
+func _on_file_drag(files: PoolStringArray, _screen) -> void:
+	for i in range(files.size()):
+		var file_path := files[i]
+		var folder := file_path.get_base_dir()
+		var file := file_path.get_file()
+		var file_extension := file_path.get_extension()
+		
+		if file_extension in ["zip", "rar", "7z"]:
+			print("OK")
+			OS.execute("powershell.exe", ["-Command", "./7-Zip/7z.exe", "x", file_path, "-o"+folder], false)
