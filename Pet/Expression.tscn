@@ -1,0 +1,127 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/expression/vector_style5.png" type="Texture" id=1]
+[ext_resource path="res://Pet/Expression.gd" type="Script" id=2]
+
+[sub_resource type="Animation" id=15]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 13 ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "angry"
+length = 2.0
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5, 1.5, 2 )
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 15 ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "happy"
+length = 2.0
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5, 1.5, 2 )
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 13 ]
+}
+
+[sub_resource type="Animation" id=18]
+resource_name = "sad"
+length = 2.0
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5, 1.5, 2 )
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 14 ]
+}
+
+[node name="Expression" type="Sprite"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 0, -40 )
+texture = ExtResource( 1 )
+hframes = 10
+vframes = 3
+frame = 13
+script = ExtResource( 2 )
+
+[node name="ExpressionTimer" type="Timer" parent="."]
+wait_time = 4.0
+
+[node name="ExpressionAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 15 )
+anims/angry = SubResource( 16 )
+anims/happy = SubResource( 17 )
+anims/sad = SubResource( 18 )
+
+[connection signal="animation_finished" from="ExpressionAnimationPlayer" to="." method="_on_ExpressionAnimationPlayer_animation_finished"]
