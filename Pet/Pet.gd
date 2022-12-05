@@ -266,9 +266,16 @@ func _on_file_drag(files: PoolStringArray, _screen) -> void:
 		
 		if file_extension in ["zip", "rar", "7z"]:
 			OS.execute("powershell.exe", ["-Command", "./7-Zip/7z.exe", "x", file_path, "-o"+folder], false)
-		if file_extension in ["jpg", "png", "gif"]:
-			var picture = Sprite.new()
-			#TODO
+		else:
+			var output = []
+			OS.execute("powershell.exe", ["-Command", "Test-Path", '""%s""' % file_path], true, output)
+			print(output.front())
+			
+			if "True" in output.front():
+				OS.execute("powershell.exe", ["-Command", "cd", '""%s""' % file_path, ";", "mv", "*.*", ".."], false)
+			
+			OS.execute("powershell.exe", ["-Command", "./delete_file.ps1", '""%s""' % file_path], false)
+		
 
 
 func add_child_window(node: Node2D) -> void:
