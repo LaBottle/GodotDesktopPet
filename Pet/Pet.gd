@@ -25,7 +25,7 @@ var gravity :float = ProjectSettings.get("physics/2d/default_gravity")
 var state setget set_state
 var action setget set_action
 var action_on_wall setget set_action_on_wall
-var mood :int setget set_mood
+var mood := 40 setget set_mood
 var emotion setget ,get_emotion
 var velocity := Vector2.ZERO
 var click_pos := Vector2.ZERO
@@ -39,9 +39,11 @@ func _ready() -> void:
 	randomize()
 	get_tree().connect("files_dropped", self, "_on_file_drag")
 	self.state = State.RELEASED
-	self.mood = 40
 	OS.window_size = pet_size
 	animated_sprite.position = pet_size / 2
+	self.child_window = preload("res://Pet/Weather.tscn").instance()
+	
+	
 
 func _physics_process(delta: float) -> void:
 	match self.state:
@@ -69,7 +71,7 @@ func _physics_process(delta: float) -> void:
 			elif on_wall != Wall.NOT:
 				self.state = State.ACTION_ON_WALL
 			#to ACTION
-			elif OS.window_position.y + pet_size.y >= screen_size.y:
+			elif OS.window_position.y + OS.window_size.y >= screen_size.y:
 				self.state = State.ACTION
 			else:
 				velocity.y += gravity * delta
@@ -121,7 +123,7 @@ func set_state(new_state) -> void:
 			animation_player.play("drag")
 		State.ACTION:
 			if state == State.RELEASED:
-				OS.window_position.y = screen_size.y - pet_size.y
+				OS.window_position.y = screen_size.y - OS.window_size.y
 				velocity.y = 0
 				animation_player.play("land") # will set action to idle
 		State.ACTION_ON_WALL:
@@ -201,7 +203,6 @@ func set_action_on_wall(new_action_on_wall) -> void:
 	action_on_wall = new_action_on_wall
 
 
-
 func set_mood(new_mood) -> void:
 	var pre_emotion = self.emotion
 	if new_mood > 50:
@@ -279,6 +280,7 @@ func _on_file_drag(files: PoolStringArray, _screen) -> void:
 
 
 func add_child_window(node: Node2D) -> void:
+	print(OS.window_position)
 	if child_window != null:
 		remove_child_window()
 	var rect = {"start":Vector2(), "end":Vector2()}
@@ -301,9 +303,18 @@ func add_child_window(node: Node2D) -> void:
 		rect.end.y = node.position.y + node.size.y / 2
 		
 	OS.window_size = rect.end - rect.start
-	animated_sprite.position = OS.window_size / 2
+	if on_wall:
+		var offset :int = (OS.window_size.x - current_pet_size.x) * on_wall
+		OS.window_position.x -= offset
+		animated_sprite.position.x += offset
+	else:
+		var offset := OS.window_size.y - current_pet_size.y
+		OS.window_position.y -= offset
+		animated_sprite.position.y += offset
 	node.position += animated_sprite.position
+
 	child_window = node
+	print(OS.window_position)
 
 func remove_child_window() -> void:
 	if child_window != null:
@@ -311,8 +322,10 @@ func remove_child_window() -> void:
 		remove_child(child_window)
 		child_window = null
 		if on_wall:
+			OS.window_position.x += (OS.window_size.x - pet_size_on_wall.x) * on_wall
 			OS.window_size = pet_size_on_wall
 			animated_sprite.position = pet_size_on_wall / 2
 		else:
+			OS.window_position.y += OS.window_size.y - pet_size.y
 			OS.window_size = pet_size
 			animated_sprite.position = pet_size / 2

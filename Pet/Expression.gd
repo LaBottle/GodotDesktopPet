@@ -3,6 +3,7 @@ extends Sprite
 const size = Vector2(32, 38)
 
 func new(emotion: String) -> Sprite:
+	modulate.a = 0
 	$ExpressionAnimationPlayer.play(emotion)
 	return self
 
