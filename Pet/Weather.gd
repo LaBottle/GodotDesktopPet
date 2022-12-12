@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func _on_IPAPIRequest_request_completed(result: int, response_code: int, headers: PoolStringArray, body: PoolByteArray) -> void:
 	if result != HTTPRequest.RESULT_SUCCESS:
-		push_error("The IP API HTTP request failed")
+		push_error("The IP API HTTP request failed!")
 		get_parent().remove_child_window()
 		return
 	var json: Dictionary = parse_json(body.get_string_from_utf8())
@@ -21,10 +21,13 @@ func _on_IPAPIRequest_request_completed(result: int, response_code: int, headers
 
 func _on_WeatherAPIRequest_request_completed(result: int, response_code: int, headers: PoolStringArray, body: PoolByteArray) -> void:
 	if result != HTTPRequest.RESULT_SUCCESS:
-		push_error("The weather API HTTP request failed")
+		push_error("The weather API HTTP request failed!")
 		get_parent().remove_child_window()
 		return
 	var json: Dictionary = parse_json(body.get_string_from_utf8())
+	if json.code == 0:
+		push_error(json.directions)
+		return
 	var data: Dictionary = json.data.list[0]
 	var is_night :int = OS.get_time().hour < 6 or OS.get_time().hour >= 18
 	$Sprite.texture = load("res://Assets/weather_icon/%s_%s.png" % [data.numtq, is_night])
