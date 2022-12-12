@@ -2,8 +2,10 @@ extends Sprite
 
 const size = Vector2(32, 38)
 
-func new(emotion: String) -> Sprite:
+func _ready() -> void:
 	modulate.a = 0
+
+func new(emotion: String) -> Sprite:
 	$ExpressionAnimationPlayer.play(emotion)
 	return self
 

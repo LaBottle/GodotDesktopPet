@@ -1,5 +1,9 @@
 extends Control
 
+#enum PetType {cat, }
+enum PetVariety {black, brown, white}
+export(PetVariety) var pet_variety = PetVariety.white
+
 
 onready var animated_sprite: AnimatedSprite = $AnimatedSprite
 onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -36,14 +40,36 @@ var on_wall = Wall.NOT
 
 
 func _ready() -> void:
+	var variety :String = PetVariety.keys()[pet_variety]
+	for i in range(3):
+		animated_sprite.frames.add_frame("jump", load("res://Assets/cat/"+variety+"_fall_from_grab_8fps/"+str(i)+".png"))
+	for i in range(8):
+		animated_sprite.frames.add_frame("idle", load("res://Assets/cat/"+variety+"_idle_8fps/"+str(i)+".png"))
+	for i in range(2):
+		animated_sprite.frames.add_frame("land", load("res://Assets/cat/"+variety+"_land_8fps/"+str(i)+".png"))
+	for i in range(10):
+		animated_sprite.frames.add_frame("run", load("res://Assets/cat/"+variety+"_run_8fps/"+str(i)+".png"))
+	for i in range(7):
+		animated_sprite.frames.add_frame("swipe", load("res://Assets/cat/"+variety+"_swipe_8fps/"+str(i)+".png"))
+	for i in range(8):
+		animated_sprite.frames.add_frame("walk", load("res://Assets/cat/"+variety+"_walk_8fps/"+str(i)+".png"))
+	for i in range(4):
+		animated_sprite.frames.add_frame("walk_fast", load("res://Assets/cat/"+variety+"_walk_fast_8fps/"+str(i)+".png"))
+	for i in range(8):
+		animated_sprite.frames.add_frame("climb", load("res://Assets/cat/"+variety+"_wallclimb_8fps/"+str(i)+".png"))
+	for i in range(8):
+		animated_sprite.frames.add_frame("grab", load("res://Assets/cat/"+variety+"_wallgrab_8fps/"+str(i)+".png"))
+	animated_sprite.frames.add_frame("release", load("res://Assets/cat/"+variety+"_fall_from_grab_8fps/"+str(2)+".png"))
+	animated_sprite.frames.add_frame("drag", load("res://Assets/cat/"+variety+"_fall_from_grab_8fps/"+str(1)+".png"))
+
 	randomize()
 	get_tree().connect("files_dropped", self, "_on_file_drag")
 	self.state = State.RELEASED
 	OS.window_size = pet_size
 	animated_sprite.position = pet_size / 2
 	self.child_window = preload("res://Pet/Weather.tscn").instance()
-	
-	
+
+
 
 func _physics_process(delta: float) -> void:
 	match self.state:
@@ -98,7 +124,7 @@ func _physics_process(delta: float) -> void:
 		State.ACTION_ON_WALL:
 			if Input.is_action_just_pressed("click"):
 				self.state = State.DRAGGING
-			#when action_on_wall is jump, state will become RELEASED
+			#when action_on_wall is ActionOnWall.JUMP, state will become State.RELEASED
 			else:
 				OS.window_position += velocity * delta
 
@@ -196,7 +222,7 @@ func set_action_on_wall(new_action_on_wall) -> void:
 					animated_sprite.flip_h = true
 					direction = -1
 			velocity = Vector2.LEFT * jump_speed * on_wall
-			animation_player.play("jump_from_grab")
+			animation_player.play("jump")
 			on_wall = Wall.NOT
 			self.state = State.RELEASED
 
@@ -270,17 +296,13 @@ func _on_file_drag(files: PoolStringArray, _screen) -> void:
 		else:
 			var output = []
 			OS.execute("powershell.exe", ["-Command", "Test-Path", '""%s""' % file_path], true, output)
-			print(output.front())
-			
 			if "True" in output.front():
 				OS.execute("powershell.exe", ["-Command", "cd", '""%s""' % file_path, ";", "mv", "*.*", ".."], false)
-			
 			OS.execute("powershell.exe", ["-Command", "./delete_file.ps1", '""%s""' % file_path], false)
 		
 
 
 func add_child_window(node: Node2D) -> void:
-	print(OS.window_position)
 	if child_window != null:
 		remove_child_window()
 	var rect = {"start":Vector2(), "end":Vector2()}
