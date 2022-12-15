@@ -48,10 +48,7 @@ func _ready() -> void:
 	self.child_window = preload("res://Pet/Weather.tscn").instance()
 
 
-
 func _physics_process(delta: float) -> void:
-	if Input.is_action_just_pressed("control"):
-		self.child_window = preload("res://Menu/Menu.tscn").instance()
 	match self.state:
 		State.DRAGGING:
 			if OS.window_position.x + get_global_mouse_position().x <= 1:

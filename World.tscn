@@ -9,5 +9,6 @@ mouse_filter = 2
 script = ExtResource( 2 )
 
 [node name="Pet" parent="." instance=ExtResource( 1 )]
+pet_variety = 2
 
 [node name="Tray" parent="." instance=ExtResource( 3 )]
