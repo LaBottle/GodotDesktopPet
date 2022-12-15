@@ -1,13 +1,13 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Pet/Pet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://World.gd" type="Script" id=2]
+[ext_resource path="res://Tray.tscn" type="PackedScene" id=3]
 
 [node name="World" type="Control"]
 mouse_filter = 2
 script = ExtResource( 2 )
 
 [node name="Pet" parent="." instance=ExtResource( 1 )]
-__meta__ = {
-"_edit_group_": true
-}
+
+[node name="Tray" parent="." instance=ExtResource( 3 )]

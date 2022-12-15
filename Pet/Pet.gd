@@ -4,7 +4,6 @@ extends Control
 enum PetVariety {black, brown, white}
 export(PetVariety) var pet_variety = PetVariety.white
 
-
 onready var animated_sprite: AnimatedSprite = $AnimatedSprite
 onready var animation_player: AnimationPlayer = $AnimationPlayer
 onready var action_switch_timer: Timer = $ActionSwitchTimer
@@ -33,34 +32,13 @@ var mood := 40 setget set_mood
 var emotion setget ,get_emotion
 var velocity := Vector2.ZERO
 var click_pos := Vector2.ZERO
-var direction := 1
 
 enum Wall { NOT=0, LEFT=-1, RIGHT=1 }
 var on_wall = Wall.NOT
 
 
 func _ready() -> void:
-	var variety :String = PetVariety.keys()[pet_variety]
-	for i in range(3):
-		animated_sprite.frames.add_frame("jump", load("res://Assets/cat/"+variety+"_fall_from_grab_8fps/"+str(i)+".png"))
-	for i in range(8):
-		animated_sprite.frames.add_frame("idle", load("res://Assets/cat/"+variety+"_idle_8fps/"+str(i)+".png"))
-	for i in range(2):
-		animated_sprite.frames.add_frame("land", load("res://Assets/cat/"+variety+"_land_8fps/"+str(i)+".png"))
-	for i in range(10):
-		animated_sprite.frames.add_frame("run", load("res://Assets/cat/"+variety+"_run_8fps/"+str(i)+".png"))
-	for i in range(7):
-		animated_sprite.frames.add_frame("swipe", load("res://Assets/cat/"+variety+"_swipe_8fps/"+str(i)+".png"))
-	for i in range(8):
-		animated_sprite.frames.add_frame("walk", load("res://Assets/cat/"+variety+"_walk_8fps/"+str(i)+".png"))
-	for i in range(4):
-		animated_sprite.frames.add_frame("walk_fast", load("res://Assets/cat/"+variety+"_walk_fast_8fps/"+str(i)+".png"))
-	for i in range(8):
-		animated_sprite.frames.add_frame("climb", load("res://Assets/cat/"+variety+"_wallclimb_8fps/"+str(i)+".png"))
-	for i in range(8):
-		animated_sprite.frames.add_frame("grab", load("res://Assets/cat/"+variety+"_wallgrab_8fps/"+str(i)+".png"))
-	animated_sprite.frames.add_frame("release", load("res://Assets/cat/"+variety+"_fall_from_grab_8fps/"+str(2)+".png"))
-	animated_sprite.frames.add_frame("drag", load("res://Assets/cat/"+variety+"_fall_from_grab_8fps/"+str(1)+".png"))
+	set_variety(pet_variety)
 
 	randomize()
 	get_tree().connect("files_dropped", self, "_on_file_drag")
@@ -72,6 +50,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("control"):
+		self.child_window = preload("res://Menu/Menu.tscn").instance()
 	match self.state:
 		State.DRAGGING:
 			if OS.window_position.x + get_global_mouse_position().x <= 1:
@@ -184,17 +164,15 @@ func set_action(new_action) -> void:
 		Action.WALK:
 			self.mood += 1
 			if randi() % 2 > 0:
-				direction = -direction
 				animated_sprite.flip_h = not animated_sprite.flip_h
-			velocity = Vector2.RIGHT * walk_speed * direction
+			velocity = Vector2.RIGHT * walk_speed * -(int(animated_sprite.flip_h) * 2 - 1)
 			action_switch_timer.start(4.8)
 			animation_player.play("walk")
 		Action.RUN:
 			self.mood += 3
 			if randi() % 4 > 0:
-				direction = -direction
 				animated_sprite.flip_h = not animated_sprite.flip_h
-			velocity = Vector2.RIGHT * run_speed * direction
+			velocity = Vector2.RIGHT * run_speed * -(int(animated_sprite.flip_h) * 2 - 1)
 			action_switch_timer.start(2.4) # 2 to 0
 			animation_player.play("run")
 			
@@ -217,10 +195,8 @@ func set_action_on_wall(new_action_on_wall) -> void:
 			match on_wall:
 				Wall.LEFT:
 					animated_sprite.flip_h = false
-					direction = 1
 				Wall.RIGHT:
 					animated_sprite.flip_h = true
-					direction = -1
 			velocity = Vector2.LEFT * jump_speed * on_wall
 			animation_player.play("jump")
 			on_wall = Wall.NOT
@@ -351,3 +327,63 @@ func remove_child_window() -> void:
 			OS.window_position.y += OS.window_size.y - pet_size.y
 			OS.window_size = pet_size
 			animated_sprite.position = pet_size / 2
+
+func set_variety(new_variety) -> void:
+	pet_variety = new_variety
+	var variety :String = PetVariety.keys()[pet_variety]
+	animated_sprite.frames.clear_all()
+	
+	animated_sprite.frames.add_animation("jump")
+	animated_sprite.frames.set_animation_loop("jump", false)
+	animated_sprite.frames.set_animation_speed("jump", 8)
+	for i in range(3):
+		animated_sprite.frames.add_frame("jump", load("res://Assets/cat/"+variety+"_fall_from_grab_8fps/"+str(i)+".png"))
+		
+	animated_sprite.frames.add_animation("idle")
+	animated_sprite.frames.set_animation_speed("idle", 8)
+	for i in range(8):
+		animated_sprite.frames.add_frame("idle", load("res://Assets/cat/"+variety+"_idle_8fps/"+str(i)+".png"))
+		
+	animated_sprite.frames.add_animation("land")
+	animated_sprite.frames.set_animation_loop("land", false)
+	animated_sprite.frames.set_animation_speed("land", 8)
+	for i in range(2):
+		animated_sprite.frames.add_frame("land", load("res://Assets/cat/"+variety+"_land_8fps/"+str(i)+".png"))
+		
+	animated_sprite.frames.add_animation("run")
+	animated_sprite.frames.set_animation_speed("run", 8)
+	for i in range(10):
+		animated_sprite.frames.add_frame("run", load("res://Assets/cat/"+variety+"_run_8fps/"+str(i)+".png"))
+		
+	animated_sprite.frames.add_animation("swipe")
+	animated_sprite.frames.set_animation_speed("swipe", 8)
+	for i in range(7):
+		animated_sprite.frames.add_frame("swipe", load("res://Assets/cat/"+variety+"_swipe_8fps/"+str(i)+".png"))
+		
+	animated_sprite.frames.add_animation("walk")
+	animated_sprite.frames.set_animation_speed("walk", 8)
+	for i in range(8):
+		animated_sprite.frames.add_frame("walk", load("res://Assets/cat/"+variety+"_walk_8fps/"+str(i)+".png"))
+		
+	animated_sprite.frames.add_animation("walk_fast")
+	animated_sprite.frames.set_animation_speed("walk_fast", 8)
+	for i in range(4):
+		animated_sprite.frames.add_frame("walk_fast", load("res://Assets/cat/"+variety+"_walk_fast_8fps/"+str(i)+".png"))
+		
+	animated_sprite.frames.add_animation("climb")
+	animated_sprite.frames.set_animation_speed("climb", 8)
+	for i in range(8):
+		animated_sprite.frames.add_frame("climb", load("res://Assets/cat/"+variety+"_wallclimb_8fps/"+str(i)+".png"))
+		
+	animated_sprite.frames.add_animation("grab")
+	animated_sprite.frames.set_animation_speed("grab", 8)
+	for i in range(8):
+		animated_sprite.frames.add_frame("grab", load("res://Assets/cat/"+variety+"_wallgrab_8fps/"+str(i)+".png"))
+		
+	animated_sprite.frames.add_animation("release")
+	animated_sprite.frames.set_animation_loop("release", false)
+	animated_sprite.frames.add_frame("release", load("res://Assets/cat/"+variety+"_fall_from_grab_8fps/"+str(2)+".png"))
+	
+	animated_sprite.frames.add_animation("drag")
+	animated_sprite.frames.set_animation_loop("drag", false)
+	animated_sprite.frames.add_frame("drag", load("res://Assets/cat/"+variety+"_fall_from_grab_8fps/"+str(1)+".png"))
