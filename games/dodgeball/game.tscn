@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://games/dodgeball/game_ball.gd" type="Script" id=1]
+[ext_resource path="res://games/dodgeball/game_pet.gd" type="Script" id=2]
+[ext_resource path="res://Assets/game/pixil-frame-0.png" type="Texture" id=3]
+[ext_resource path="res://Assets/cat/white_swipe_8fps/4.png" type="Texture" id=4]
+[ext_resource path="res://games/dodgeball/dodgeball_world.gd" type="Script" id=5]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "run",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 28, 41.5 )
+
+[sub_resource type="CanvasItemMaterial" id=4]
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 20.0
+
+[node name="dodgeball_world" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="pet" type="KinematicBody2D" parent="."]
+position = Vector2( 5, -4 )
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="pet"]
+position = Vector2( 356, 553 )
+frames = SubResource( 1 )
+animation = "idle"
+
+[node name="CollisionPolygon2D" type="CollisionShape2D" parent="pet"]
+position = Vector2( 342, 560 )
+shape = SubResource( 2 )
+
+[node name="ball" type="RigidBody2D" parent="."]
+material = SubResource( 4 )
+contacts_reported = 1
+contact_monitor = true
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="ball"]
+position = Vector2( 179, 90 )
+scale = Vector2( 2.4, 2.4 )
+texture = ExtResource( 3 )
+
+[node name="CollisionPolygon2D" type="CollisionShape2D" parent="ball"]
+position = Vector2( 180, 89 )
+shape = SubResource( 3 )
+
+[node name="Area2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+position = Vector2( 4, 5 )
+polygon = PoolVector2Array( -4, 595, 1020, 595, 1020, -5, -4, -5, 2, -47, 1077, -40, 1070, 642, -42, 646, -45, -5, -9, -12, -4, -5 )

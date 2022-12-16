@@ -5,10 +5,16 @@
 [ext_resource path="res://Tray.tscn" type="PackedScene" id=3]
 
 [node name="World" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -135.0
+margin_bottom = -95.0
 mouse_filter = 2
 script = ExtResource( 2 )
 
 [node name="Pet" parent="." instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 pet_variety = 2
 
 [node name="Tray" parent="." instance=ExtResource( 3 )]

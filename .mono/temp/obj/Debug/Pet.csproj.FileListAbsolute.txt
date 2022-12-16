@@ -7,3 +7,12 @@ C:\Project\Godot\GodotDesktopPet\.mono\temp\obj\Debug\Pet.AssemblyInfo.cs
 C:\Project\Godot\GodotDesktopPet\.mono\temp\obj\Debug\Pet.csproj.CoreCompileInputs.cache
 C:\Project\Godot\GodotDesktopPet\.mono\temp\obj\Debug\Pet.dll
 C:\Project\Godot\GodotDesktopPet\.mono\temp\obj\Debug\Pet.pdb
+D:\Prog\godot\GodotDesktopPet\.mono\temp\bin\Debug\Pet.dll
+D:\Prog\godot\GodotDesktopPet\.mono\temp\bin\Debug\Pet.pdb
+D:\Prog\godot\GodotDesktopPet\.mono\temp\obj\Debug\Pet.csproj.AssemblyReference.cache
+D:\Prog\godot\GodotDesktopPet\.mono\temp\obj\Debug\Pet.GeneratedMSBuildEditorConfig.editorconfig
+D:\Prog\godot\GodotDesktopPet\.mono\temp\obj\Debug\Pet.AssemblyInfoInputs.cache
+D:\Prog\godot\GodotDesktopPet\.mono\temp\obj\Debug\Pet.AssemblyInfo.cs
+D:\Prog\godot\GodotDesktopPet\.mono\temp\obj\Debug\Pet.csproj.CoreCompileInputs.cache
+D:\Prog\godot\GodotDesktopPet\.mono\temp\obj\Debug\Pet.dll
+D:\Prog\godot\GodotDesktopPet\.mono\temp\obj\Debug\Pet.pdb
