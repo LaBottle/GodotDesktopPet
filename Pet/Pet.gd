@@ -49,6 +49,10 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+#	开启事件
+	if Input.is_action_just_pressed("control"):
+		self.child_window = preload("res://Pet/Expression.tscn").instance().new("ballgame")
+		
 	match self.state:
 		State.DRAGGING:
 			if OS.window_position.x + get_global_mouse_position().x <= 1:
@@ -384,3 +388,4 @@ func set_variety(new_variety) -> void:
 	animated_sprite.frames.add_animation("drag")
 	animated_sprite.frames.set_animation_loop("drag", false)
 	animated_sprite.frames.add_frame("drag", load("res://Assets/cat/"+variety+"_fall_from_grab_8fps/"+str(1)+".png"))
+

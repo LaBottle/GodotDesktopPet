@@ -1,18 +1,25 @@
 extends Node2D
 
-
-# Declare member variables here. Examples:
-# var a: int = 2
-# var b: String = "text"
+export (PackedScene) var ball
+onready var timer = $Timer
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	get_viewport().transparent_bg = true
 	
 	OS.window_size = Vector2(1024, 600)
-	pass # Replace with function body.
+	OS.window_position = Vector2((OS.get_screen_size().x-1024)/2,OS.get_screen_size().y-600)
+	timer.start(2)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-#	pass
+
+func _on_Timer_timeout() -> void:
+	var a = ball.instance()
+	a.setType(randi()%4)
+	add_child(a)
+
+func set_pet_position(locate:Vector2) ->void:
+	get_node("ball").position.x = position.x
+	pass
+
+
