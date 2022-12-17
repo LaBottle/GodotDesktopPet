@@ -12,7 +12,6 @@ var gravity :float = ProjectSettings.get("physics/2d/default_gravity")
 var jump_force = 500
 
 func _ready() -> void:
-	
 	set_variety(pet_variety)
 	pass
 
@@ -27,7 +26,7 @@ func _input(event):
 		is_jumping = true
 
 func _process(delta: float) -> void:
-	var direction = Input.get_action_strength("ui_right")-Input.get_action_strength("ui_left")
+	var direction = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	velocity.x = direction * run_speed
 	velocity.y += gravity * delta
 	
