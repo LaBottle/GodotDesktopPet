@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Control",
+"class": "Pet",
+"language": "GDScript",
+"path": "res://Pet/Pet.gd"
+} ]
+_global_script_class_icons={
+"Pet": ""
+}
+
 [application]
 
 config/name="Pet"

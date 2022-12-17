@@ -1,5 +1,5 @@
 extends Control
-
+class_name Pet
 #enum PetType {cat, }
 enum PetVariety {black, brown, white}
 export(PetVariety) var pet_variety = PetVariety.white

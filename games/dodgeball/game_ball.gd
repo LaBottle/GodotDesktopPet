@@ -1,17 +1,17 @@
 extends RigidBody2D
 
-export var contact_left:= 30
+export var contact_left := 30
 
 func _ready() -> void:
-	self.position.x = rand_range(0,OS.get_real_window_size().x)
-	self.bounce=1
+	position.x = rand_range(0,OS.get_real_window_size().x)
+	bounce = 1
 	
 
 func _process(delta: float) -> void:
 #	
 	pass
 	
-func setType(falltype: int)->void:
+func set_type(falltype: int)->void:
 	match falltype:
 		1:
 #			key
@@ -28,22 +28,20 @@ func setType(falltype: int)->void:
 	pass
 
 func _on_ball_body_entered(body: Node) -> void:
-	self.contact_left = self.contact_left - 1
+	contact_left = contact_left - 1
 	if body is KinematicBody2D:
 		if(get_node("Sprite").frame == 68):
-			show_expression("sad")
+			show_expression("ballgame")
 		else:
 			dead()
 		
-	elif self.contact_left <0:
+	elif contact_left <0:
 		dead()
-	pass # Replace with function body.
 
 func dead()-> void:
 	queue_free()
-	pass
 	
-func show_expression(emotion:String)->void:
+func show_expression(emotion: String) -> void:
 	get_parent().get_node("pet").child_window = preload("res://Pet/Expression.tscn").instance().new(emotion)
 
 
