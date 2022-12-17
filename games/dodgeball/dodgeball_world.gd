@@ -12,6 +12,10 @@ func _ready() -> void:
 	timer.start(2)
 
 
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("ui_cancel"):
+#		get_tree().change_scene_to(global_data.previous_scene)
+		get_tree().change_scene("res://World.tscn")
 
 func _on_Timer_timeout() -> void:
 	var a = ball.instance()

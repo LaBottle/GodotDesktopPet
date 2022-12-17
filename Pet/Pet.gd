@@ -51,7 +51,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 #	开启事件
 	if Input.is_action_just_pressed("control"):
-		self.child_window = preload("res://Pet/Expression.tscn").instance().new("ballgame")
+		self.child_window = preload("res://Pet/Expression.tscn").instance().new("happy")
 		
 	match self.state:
 		State.DRAGGING:
