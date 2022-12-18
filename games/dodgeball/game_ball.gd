@@ -31,7 +31,7 @@ func _on_ball_body_entered(body: Node) -> void:
 	contact_left = contact_left - 1
 	if body is KinematicBody2D:
 		if(get_node("Sprite").frame == 68):
-			show_expression("ballgame")
+			show_expression("sad")
 		else:
 			dead()
 		
@@ -42,6 +42,7 @@ func dead()-> void:
 	queue_free()
 	
 func show_expression(emotion: String) -> void:
-	get_parent().get_node("pet").child_window = preload("res://Pet/Expression.tscn").instance().new(emotion)
+#	get_parent().get_node("pet").child_window = preload("res://Pet/Expression.tscn").instance().new(emotion)
+	pass
 
 

@@ -32,7 +32,8 @@ func _process(delta: float) -> void:
 	
 	if is_jumping:
 		animated_sprite.play("run")
-		animated_sprite.flip_h = direction < 0
+		if direction != 0:
+			animated_sprite.flip_h = direction < 0
 	elif direction == 0:
 		animated_sprite.play("idle")
 	else:
