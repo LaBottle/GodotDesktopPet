@@ -11,6 +11,17 @@ public class Tray : Node {
     public ContextMenu Menu { get; set; } = new ContextMenu();
     public MenuItem ExitItem { get; set; } = new MenuItem();
     public MenuItem VarietyChangeItem { get; set; } = new MenuItem();
+    public MenuItem MoodValueItem { get; set; } = new MenuItem();
+    public MenuItem EmotionalThresholdItem { get; set; } = new MenuItem();
+    
+    public enum EmotionalThreshold {
+        Low,
+        Medium,
+        High
+    }
+    public MenuItem LowEmotionalThresholdItem { get; set; } = new MenuItem();
+    public MenuItem MediumEmotionalThresholdItem { get; set; } = new MenuItem();
+    public MenuItem HighEmotionalThresholdItem { get; set; } = new MenuItem();
 
     public enum Variety {
         Black,
@@ -25,12 +36,48 @@ public class Tray : Node {
     public override void _Ready() {
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
-        Menu.MenuItems.AddRange(new MenuItem[] {VarietyChangeItem, ExitItem});
+        Menu.MenuItems.AddRange(new MenuItem[] {MoodValueItem, EmotionalThresholdItem, VarietyChangeItem, ExitItem});
 
-        VarietyChangeItem.Index = 0;
+        // MoodValueItem.Index = 0;
+        MoodValueItem.Text = $"心情: {GetParent().GetNode("Pet").Get("mood")}";
+
+        EmotionalThresholdItem.Text = "情绪阈值";
+        EmotionalThresholdItem.MenuItems.AddRange(new[] {
+           LowEmotionalThresholdItem,
+           MediumEmotionalThresholdItem,
+           HighEmotionalThresholdItem
+        });
+        LowEmotionalThresholdItem.RadioCheck = true;
+        MediumEmotionalThresholdItem.RadioCheck = true;
+        HighEmotionalThresholdItem.RadioCheck = true;
+        switch ((EmotionalThreshold) GetParent().GetNode("Pet").Get("emotional_threshold")) {
+            case EmotionalThreshold.Low:
+                LowEmotionalThresholdItem.Checked = true;
+                break;
+            case EmotionalThreshold.Medium:
+                MediumEmotionalThresholdItem.Checked = true;
+                break;
+            case EmotionalThreshold.High:
+                HighEmotionalThresholdItem.Checked = true;
+                break;
+            default:
+                GD.PushError("ArgumentException: `emotional_threshold` is undefined");
+                throw new ArgumentException("ArgumentException: `emotional_threshold` is undefined");
+        }
+        
+        LowEmotionalThresholdItem.Text = "低";
+        LowEmotionalThresholdItem.Click += ChangeEmotionalThresholdEventHandler;        
+        MediumEmotionalThresholdItem.Text = "中";
+        MediumEmotionalThresholdItem.Click += ChangeEmotionalThresholdEventHandler;     
+        HighEmotionalThresholdItem.Text = "高";
+        HighEmotionalThresholdItem.Click += ChangeEmotionalThresholdEventHandler;
+
         VarietyChangeItem.Text = "品种";
-        VarietyChangeItem.MenuItems.AddRange(new[]
-            {VarietyBlackItem, VarietyBrownItem, VarietyWhiteItem});
+        VarietyChangeItem.MenuItems.AddRange(new[] {
+            VarietyBlackItem, 
+            VarietyBrownItem, 
+            VarietyWhiteItem
+        });
         VarietyBlackItem.RadioCheck = true;
         VarietyBrownItem.RadioCheck = true;
         VarietyWhiteItem.RadioCheck = true;
@@ -49,19 +96,14 @@ public class Tray : Node {
                 throw new ArgumentException("ArgumentException: `pet_variety` is undefined");
         }
 
-        VarietyBlackItem.Index = 0;
+
         VarietyBlackItem.Text = "黑色";
         VarietyBlackItem.Click += ChangeVarietyEventHandler;
-
-        VarietyBrownItem.Index = 1;
         VarietyBrownItem.Text = "棕色";
         VarietyBrownItem.Click += ChangeVarietyEventHandler;
-
-        VarietyWhiteItem.Index = 2;
         VarietyWhiteItem.Text = "白色";
         VarietyWhiteItem.Click += ChangeVarietyEventHandler;
 
-        ExitItem.Index = 1;
         ExitItem.Text = "退出";
         ExitItem.Click += ExitItemClickEventHandler;
 
@@ -79,6 +121,11 @@ public class Tray : Node {
                 throw;
             }
         });
+    }
+
+
+    private void OnChangeMood(int mood) {
+        MoodValueItem.Text = $"心情: {mood}";
     }
 
     private void ExitItemClickEventHandler(object sender, EventArgs e) {
@@ -118,7 +165,36 @@ public class Tray : Node {
                 "ArgumentException: `sender` is not included in `VarietyChangeItem`");
         }
 
-        GetParent().GetNode("Pet").Call("set_variety", variety);
+        GetNode("../Pet").Call("set_variety", variety);
+    }
+    
+    private void ChangeEmotionalThresholdEventHandler(object sender, EventArgs e) {
+        EmotionalThreshold emotionalThreshold;
+        if (sender == LowEmotionalThresholdItem) {
+            emotionalThreshold = EmotionalThreshold.Low;
+            LowEmotionalThresholdItem.Checked = true;
+            MediumEmotionalThresholdItem.Checked = false;
+            HighEmotionalThresholdItem.Checked = false;
+        }
+        else if (sender == MediumEmotionalThresholdItem) {
+            emotionalThreshold = EmotionalThreshold.Medium;
+            LowEmotionalThresholdItem.Checked = false;
+            MediumEmotionalThresholdItem.Checked = true;
+            HighEmotionalThresholdItem.Checked = false;
+        }
+        else if (sender == HighEmotionalThresholdItem) {
+            emotionalThreshold = EmotionalThreshold.High;
+            LowEmotionalThresholdItem.Checked = false;
+            MediumEmotionalThresholdItem.Checked = false;
+            HighEmotionalThresholdItem.Checked = true;
+        }
+        else {
+            GD.PushError("ArgumentException: `sender` is not included in `VarietyChangeItem`");
+            throw new ArgumentException(
+                "ArgumentException: `sender` is not included in `VarietyChangeItem`");
+        }
+
+        GetNode("../Pet").Call("set_emotional_threshold", emotionalThreshold);
     }
 
 }

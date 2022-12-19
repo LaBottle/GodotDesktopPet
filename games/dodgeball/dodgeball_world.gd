@@ -1,7 +1,7 @@
 extends Node2D
 
 export (PackedScene) var Ball = preload("res://games/dodgeball/ball.tscn")
-onready var timer = $Timer
+onready var timer: Timer = $Timer
 
 func _ready() -> void:
 	get_viewport().transparent_bg = true

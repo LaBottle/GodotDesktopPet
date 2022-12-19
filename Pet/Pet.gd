@@ -4,6 +4,8 @@ class_name Pet
 enum PetVariety {black, brown, white}
 export(PetVariety) var pet_variety = PetVariety.white
 
+signal change_mood
+
 onready var animated_sprite: AnimatedSprite = $AnimatedSprite
 onready var animation_player: AnimationPlayer = $AnimationPlayer
 onready var action_switch_timer: Timer = $ActionSwitchTimer
@@ -13,7 +15,7 @@ var child_window: Node2D = null setget add_child_window
 enum State { RELEASED, DRAGGING, ACTION, ACTION_ON_WALL, STOP}
 enum Action { IDLE, WALK, RUN }
 enum ActionOnWall { GRAB, CLIMB, JUMP }
-
+enum EmotionalThreshold {LOW, MEDIUM, HIGH}
 #constant
 const walk_speed := 100
 const run_speed := 200
@@ -29,6 +31,9 @@ var state setget set_state
 var action setget set_action
 var action_on_wall setget set_action_on_wall
 var mood := 40 setget set_mood
+var happy_mood := 40
+var sad_mood := 20
+export(EmotionalThreshold) var emotional_threshold = EmotionalThreshold.LOW setget set_emotional_threshold
 var emotion setget ,get_emotion
 var velocity := Vector2.ZERO
 var click_pos := Vector2.ZERO
@@ -36,12 +41,11 @@ var click_pos := Vector2.ZERO
 enum Wall { NOT=0, LEFT=-1, RIGHT=1 }
 var on_wall = Wall.NOT
 
-
 func _ready() -> void:
 	set_variety(pet_variety)
-
 	randomize()
 	get_tree().connect("files_dropped", self, "_on_file_drag")
+	connect("change_mood", $"../Tray", "OnChangeMood")
 	self.state = State.RELEASED
 	OS.window_size = pet_size
 	animated_sprite.position = pet_size / 2
@@ -213,9 +217,10 @@ func set_action_on_wall(new_action_on_wall) -> void:
 
 
 func set_mood(new_mood) -> void:
+	emit_signal("change_mood", new_mood)
 	var pre_emotion = self.emotion
-	if new_mood > 50:
-		mood = 50
+	if new_mood > happy_mood*2:
+		mood = happy_mood*2
 	elif new_mood < 0:
 		mood = 0
 	else:
@@ -225,9 +230,9 @@ func set_mood(new_mood) -> void:
 
 
 func get_emotion() -> String:
-	if mood >= 40:
+	if mood >= happy_mood:
 		return "happy"
-	elif mood >= 20:
+	elif mood >= sad_mood:
 		return "sad"
 	else:
 		return "angry"
@@ -337,6 +342,22 @@ func remove_child_window() -> void:
 			OS.window_size = pet_size
 			animated_sprite.position = pet_size / 2
 
+func set_emotional_threshold(new_emotional_threshold):
+	match new_emotional_threshold:
+		EmotionalThreshold.LOW:
+			mood = 20
+			happy_mood = 20
+			sad_mood = 10
+		EmotionalThreshold.MEDIUM:
+			mood = 40
+			happy_mood = 40
+			sad_mood = 20
+		EmotionalThreshold.HIGH:
+			mood = 60
+			happy_mood = 60
+			sad_mood = 30
+	emotional_threshold = new_emotional_threshold
+			
 func set_variety(new_variety) -> void:
 	pet_variety = new_variety
 	var variety :String = PetVariety.keys()[pet_variety]
