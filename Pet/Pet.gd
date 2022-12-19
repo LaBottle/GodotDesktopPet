@@ -49,11 +49,11 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+#	print(get_global_rect().has_point(get_global_mouse_position()))
 #	开启事件
 	if Input.is_action_just_pressed("control") and child_window == null and state != State.STOP:
 		self.child_window = preload("res://Pet/Expression.tscn").instance().new("ballgame")
-		
-		
+
 	match self.state:
 		State.STOP:
 			pass
@@ -397,12 +397,21 @@ func set_variety(new_variety) -> void:
 	animated_sprite.frames.set_animation_loop("drag", false)
 	animated_sprite.frames.add_frame("drag", load("res://Assets/cat/"+variety+"_fall_from_grab_8fps/"+str(1)+".png"))
 
-func game_scene_over(position_x :int)->void:
+func game_over(position_x :int)->void:
 	OS.window_size = pet_size
-	OS.window_position = Vector2(position_x,970)
+	OS.window_position = Vector2(position_x,975)
 	visible = true
 	state = State.RELEASED
 
 func game_start()->void:
 	self.state = State.STOP
+#	修复窗口变化
+	OS.window_position.y += OS.window_size.y - pet_size.y
+	OS.window_size = pet_size
+	animated_sprite.position = pet_size / 2
 	self.visible = false
+
+
+func _on_Pet_mouse_entered() -> void:
+	print("enter")
+	pass # Replace with function body.

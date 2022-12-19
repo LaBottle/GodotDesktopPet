@@ -1,14 +1,13 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Pet/Pet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://World.gd" type="Script" id=2]
 [ext_resource path="res://Tray.tscn" type="PackedScene" id=3]
+[ext_resource path="res://dialog/memo.tscn" type="PackedScene" id=4]
 
 [node name="World" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -135.0
-margin_bottom = -95.0
 mouse_filter = 2
 script = ExtResource( 2 )
 
@@ -18,3 +17,14 @@ anchor_bottom = 0.0
 pet_variety = 2
 
 [node name="Tray" parent="." instance=ExtResource( 3 )]
+
+[node name="memo" parent="." instance=ExtResource( 4 )]
+margin_left = 114.0
+margin_top = 1.0
+margin_right = 114.0
+margin_bottom = 1.0
+
+[connection signal="mouse_entered" from="." to="." method="_on_World_mouse_entered"]
+[connection signal="mouse_entered" from="Pet" to="Pet" method="_on_Pet_mouse_entered"]
+[connection signal="mouse_entered" from="memo" to="memo" method="_on_memo_mouse_entered"]
+[connection signal="mouse_exited" from="memo" to="memo" method="_on_memo_mouse_exited"]

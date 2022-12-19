@@ -13,7 +13,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
-		get_parent().get_node("Pet").game_scene_over(get_node("pet").position.x+OS.get_screen_size().x/2-585)
+		get_parent().get_node("Pet").game_over(get_node("pet").position.x+OS.get_screen_size().x/2-585)
 		get_parent().remove_child(self)
 
 	pass
