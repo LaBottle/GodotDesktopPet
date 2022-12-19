@@ -10,6 +10,7 @@ onready var animated_sprite: AnimatedSprite = $AnimatedSprite
 onready var animation_player: AnimationPlayer = $AnimationPlayer
 onready var action_switch_timer: Timer = $ActionSwitchTimer
 onready var action_on_wall_switch_timer: Timer = $ActionOnWallSwitchTimer
+onready var collision_shape_2d: CollisionShape2D = $Area2D/CollisionShape2D
 var child_window: Node2D = null setget add_child_window
 
 enum State { RELEASED, DRAGGING, ACTION, ACTION_ON_WALL, STOP}
@@ -48,6 +49,8 @@ func _ready() -> void:
 	connect("change_mood", $"../Tray", "OnChangeMood")
 	self.state = State.RELEASED
 	OS.window_size = pet_size
+	collision_shape_2d.shape.extents = pet_size / 2
+	collision_shape_2d.position = pet_size / 2
 	animated_sprite.position = pet_size / 2
 	self.child_window = preload("res://Pet/Weather.tscn").instance()
 
@@ -124,6 +127,8 @@ func set_state(new_state) -> void:
 		State.ACTION_ON_WALL:
 			action_on_wall_switch_timer.stop()
 			OS.window_size = pet_size
+			collision_shape_2d.shape.extents = pet_size / 2
+			collision_shape_2d.position = pet_size / 2
 			animated_sprite.position = pet_size / 2
 		State.STOP:
 #			self.remove_child_window()
@@ -149,6 +154,8 @@ func set_state(new_state) -> void:
 				remove_child(child_window)
 				child_window = null
 			OS.window_size = pet_size_on_wall
+			collision_shape_2d.shape.extents = pet_size_on_wall / 2
+			collision_shape_2d.position = pet_size_on_wall / 2
 			animated_sprite.position = pet_size_on_wall / 2
 			match on_wall:
 				Wall.LEFT:
@@ -313,6 +320,8 @@ func add_child_window(node: Node2D) -> void:
 		rect.end.y = node.position.y + node.size.y / 2
 		
 	OS.window_size = rect.end - rect.start
+	collision_shape_2d.shape.extents = OS.window_size / 2
+	collision_shape_2d.position = OS.window_size / 2
 	if on_wall:
 		var offset :int = (OS.window_size.x - current_pet_size.x) * on_wall
 		OS.window_position.x -= offset
@@ -336,10 +345,14 @@ func remove_child_window() -> void:
 		elif on_wall:
 			OS.window_position.x += (OS.window_size.x - pet_size_on_wall.x) * on_wall
 			OS.window_size = pet_size_on_wall
+			collision_shape_2d.shape.extents = pet_size_on_wall / 2
+			collision_shape_2d.position = pet_size_on_wall / 2
 			animated_sprite.position = pet_size_on_wall / 2
 		else:
 			OS.window_position.y += OS.window_size.y - pet_size.y
 			OS.window_size = pet_size
+			collision_shape_2d.shape.extents = pet_size / 2
+			collision_shape_2d.position = pet_size / 2
 			animated_sprite.position = pet_size / 2
 
 func set_emotional_threshold(new_emotional_threshold):
@@ -418,13 +431,13 @@ func set_variety(new_variety) -> void:
 	animated_sprite.frames.set_animation_loop("drag", false)
 	animated_sprite.frames.add_frame("drag", load("res://Assets/cat/"+variety+"_fall_from_grab_8fps/"+str(1)+".png"))
 
-func game_over(position_x :int)->void:
+func game_over(position_x :int) -> void:
 	OS.window_size = pet_size
 	OS.window_position = Vector2(position_x,975)
 	visible = true
 	state = State.RELEASED
 
-func game_start()->void:
+func game_start() -> void:
 	self.state = State.STOP
 #	修复窗口变化
 	OS.window_position.y += OS.window_size.y - pet_size.y
@@ -433,6 +446,5 @@ func game_start()->void:
 	self.visible = false
 
 
-func _on_Pet_mouse_entered() -> void:
-	print("enter")
-	pass # Replace with function body.
+func _on_Area2D_mouse_entered() -> void:
+	print("pet mouse entered")

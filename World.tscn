@@ -25,6 +25,5 @@ margin_right = 114.0
 margin_bottom = 1.0
 
 [connection signal="mouse_entered" from="." to="." method="_on_World_mouse_entered"]
-[connection signal="mouse_entered" from="Pet" to="Pet" method="_on_Pet_mouse_entered"]
 [connection signal="mouse_entered" from="memo" to="memo" method="_on_memo_mouse_entered"]
 [connection signal="mouse_exited" from="memo" to="memo" method="_on_memo_mouse_exited"]
