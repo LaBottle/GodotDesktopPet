@@ -447,4 +447,10 @@ func game_start() -> void:
 
 
 func _on_Area2D_mouse_entered() -> void:
-	print("pet mouse entered")
+#	print("pet mouse entered")
+#	get_parent().get_node("memo").visible = true
+	pass
+
+func _on_Area2D_mouse_exited() -> void:
+#	get_parent().get_node("memo").visible = true
+	pass # Replace with function body.

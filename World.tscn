@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Pet/Pet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://World.gd" type="Script" id=2]
 [ext_resource path="res://Tray.tscn" type="PackedScene" id=3]
 [ext_resource path="res://dialog/memo.tscn" type="PackedScene" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 70.5, 50 )
 
 [node name="World" type="Control"]
 anchor_right = 1.0
@@ -19,11 +22,17 @@ pet_variety = 2
 [node name="Tray" parent="." instance=ExtResource( 3 )]
 
 [node name="memo" parent="." instance=ExtResource( 4 )]
-margin_left = 114.0
-margin_top = 1.0
-margin_right = 114.0
-margin_bottom = 1.0
+visible = false
+margin_left = 107.0
+margin_right = 107.0
 
-[connection signal="mouse_entered" from="." to="." method="_on_World_mouse_entered"]
-[connection signal="mouse_entered" from="memo" to="memo" method="_on_memo_mouse_entered"]
-[connection signal="mouse_exited" from="memo" to="memo" method="_on_memo_mouse_exited"]
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 72, 45 )
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

@@ -42,7 +42,7 @@ func dead()-> void:
 	queue_free()
 	
 func show_expression(emotion: String) -> void:
-#	get_parent().get_node("pet").child_window = preload("res://Pet/Expression.tscn").instance().new(emotion)
+#	get_parent().get_node("Pet").child_window = preload("res://Pet/Expression.tscn").instance().new(emotion)
 	pass
 
 

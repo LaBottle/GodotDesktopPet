@@ -1,25 +1,41 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Assets/game/tiles.png" type="Texture" id=1]
+[ext_resource path="res://Assets/game/pixil-frame-1.png" type="Texture" id=1]
 [ext_resource path="res://dialog/memo.gd" type="Script" id=2]
-
-[sub_resource type="RectangleShape2D" id=1]
+[ext_resource path="res://new_theme.tres" type="Theme" id=3]
 
 [node name="memo" type="Control"]
 script = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 10, 11 )
-scale = Vector2( 1.05556, 1.02632 )
-texture = ExtResource( 1 )
-hframes = 22
-vframes = 9
-frame = 11
+[node name="icon" type="Button" parent="."]
+margin_right = 28.0
+margin_bottom = 22.0
+icon = ExtResource( 1 )
+flat = true
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="PetPanel" type="Panel" parent="."]
+visible = false
+margin_left = -47.0
+margin_top = 5.0
+margin_right = -1.0
+margin_bottom = 18.0
+theme = ExtResource( 3 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 11, 10 )
-shape = SubResource( 1 )
+[node name="RichTextLabel" type="Label" parent="PetPanel"]
+margin_left = 3.0
+margin_right = 50.0
+margin_bottom = 14.0
+theme = ExtResource( 3 )
+text = "QAQ~~"
 
-[connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
+[node name="Timer" type="Timer" parent="."]
+
+[node name="TextEdit" type="TextEdit" parent="."]
+visible = false
+margin_left = -21.0
+margin_top = 21.0
+margin_right = 20.0
+margin_bottom = 39.0
+
+[connection signal="pressed" from="icon" to="." method="_on_icon_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

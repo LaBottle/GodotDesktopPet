@@ -12,6 +12,13 @@ func _ready() -> void:
 	get_viewport().transparent_bg = true
 
 
-func _on_World_mouse_entered() -> void:
-	print("world_enter")
+
+func _on_Area2D_mouse_entered() -> void:
+	get_node("memo").visible = true
+	get_node("Timer").start(2)
+	pass # Replace with function body.
+
+#避免鬼畜所以改为了计时器
+func _on_Timer_timeout() -> void:
+	get_node("memo").visible = false
 	pass # Replace with function body.

@@ -371,7 +371,6 @@ tracks/1/keys = {
 }
 
 [sub_resource type="RectangleShape2D" id=15]
-extents = Vector2( 67.5, 47.5 )
 
 [node name="Pet" type="Control"]
 anchor_right = 1.0
@@ -406,9 +405,7 @@ one_shot = true
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 67.5, 47.5 )
 shape = SubResource( 15 )
 
 [connection signal="timeout" from="ActionSwitchTimer" to="." method="_on_ActionSwitchTimer_timeout"]
 [connection signal="timeout" from="ActionOnWallSwitchTimer" to="." method="_on_ActionOnWallSwitchTimer_timeout"]
-[connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]

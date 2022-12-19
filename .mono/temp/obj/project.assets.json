@@ -8,24 +8,26 @@
     ".NETFramework,Version=v4.7.2": []
   },
   "packageFolders": {
-    "C:\\Users\\LBottle\\.nuget\\packages\\": {},
-    "C:\\Users\\LBottle\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder": {}
+    "C:\\Users\\a1775\\.nuget\\packages\\": {},
+    "C:\\Users\\a1775\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Project\\Godot\\GodotDesktopPet\\Pet.csproj",
+      "projectUniqueName": "D:\\Prog\\godot\\GodotDesktopPet\\Pet.csproj",
       "projectName": "Pet",
-      "projectPath": "C:\\Project\\Godot\\GodotDesktopPet\\Pet.csproj",
-      "packagesPath": "C:\\Users\\LBottle\\.nuget\\packages\\",
-      "outputPath": "C:\\Project\\Godot\\GodotDesktopPet\\.mono\\temp\\obj\\",
+      "projectPath": "D:\\Prog\\godot\\GodotDesktopPet\\Pet.csproj",
+      "packagesPath": "C:\\Users\\a1775\\.nuget\\packages\\",
+      "outputPath": "D:\\Prog\\godot\\GodotDesktopPet\\.mono\\temp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Users\\LBottle\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder"
+        "C:\\Users\\a1775\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\LBottle\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Users\\LBottle\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config",
+        "C:\\Users\\a1775\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\a1775\\AppData\\Roaming\\NuGet\\config\\Godot.Offline.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -50,7 +52,7 @@
     "frameworks": {
       "net472": {
         "targetAlias": "net472",
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.403\\RuntimeIdentifierGraph.json"
       }
     }
   }
