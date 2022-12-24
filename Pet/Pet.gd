@@ -52,7 +52,7 @@ func _ready() -> void:
 	collision_shape_2d.shape.extents = pet_size / 2
 	collision_shape_2d.position = pet_size / 2
 	animated_sprite.position = pet_size / 2
-	self.child_window = preload("res://Pet/Weather.tscn").instance()
+	self.child_window = preload("res://Pet/Expression.tscn").instance()
 
 
 func _physics_process(delta: float) -> void:

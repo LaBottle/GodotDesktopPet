@@ -36,9 +36,8 @@ public class Tray : Node {
     public override void _Ready() {
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
-        Menu.MenuItems.AddRange(new MenuItem[] {MoodValueItem, EmotionalThresholdItem, VarietyChangeItem, ExitItem});
+        Menu.MenuItems.AddRange(new [] {MoodValueItem, EmotionalThresholdItem, VarietyChangeItem, ExitItem});
 
-        // MoodValueItem.Index = 0;
         MoodValueItem.Text = $"心情: {GetParent().GetNode("Pet").Get("mood")}";
 
         EmotionalThresholdItem.Text = "情绪阈值";
@@ -124,6 +123,7 @@ public class Tray : Node {
     }
 
 
+    // ReSharper disable once UnusedMember.Local
     private void OnChangeMood(int mood) {
         MoodValueItem.Text = $"心情: {mood}";
     }
