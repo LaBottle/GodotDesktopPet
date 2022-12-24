@@ -37,3 +37,7 @@ func _on_WeatherAPIRequest_request_completed(result: int, response_code: int, he
 
 func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
 	get_parent().remove_child_window()
+
+
+func _on_DestructTimer_timeout() -> void:
+	get_parent().remove_child_window()

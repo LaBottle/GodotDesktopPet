@@ -133,6 +133,10 @@ align = 2
 anims/RESET = SubResource( 1 )
 anims/play = SubResource( 2 )
 
+[node name="DestructTimer" type="Timer" parent="."]
+wait_time = 5.0
+
 [connection signal="request_completed" from="IPAPIRequest" to="." method="_on_IPAPIRequest_request_completed"]
 [connection signal="request_completed" from="WeatherAPIRequest" to="." method="_on_WeatherAPIRequest_request_completed"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="timeout" from="DestructTimer" to="." method="_on_DestructTimer_timeout"]

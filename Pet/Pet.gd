@@ -52,7 +52,7 @@ func _ready() -> void:
 	collision_shape_2d.shape.extents = pet_size / 2
 	collision_shape_2d.position = pet_size / 2
 	animated_sprite.position = pet_size / 2
-	self.child_window = preload("res://Pet/Expression.tscn").instance()
+	self.child_window = preload("res://Pet/Weather.tscn").instance()
 
 
 func _physics_process(delta: float) -> void:
@@ -60,7 +60,6 @@ func _physics_process(delta: float) -> void:
 #	开启事件
 	if Input.is_action_just_pressed("control") and child_window == null and state != State.STOP:
 		self.child_window = preload("res://Pet/Expression.tscn").instance().new("ballgame")
-
 	match self.state:
 		State.STOP:
 			pass
@@ -454,3 +453,7 @@ func _on_Area2D_mouse_entered() -> void:
 func _on_Area2D_mouse_exited() -> void:
 #	get_parent().get_node("memo").visible = true
 	pass # Replace with function body.
+
+
+func _on_WeatherTimer_timeout() -> void:
+	self.child_window = preload("res://Pet/Weather.tscn").instance()

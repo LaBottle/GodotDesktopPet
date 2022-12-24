@@ -407,5 +407,9 @@ one_shot = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 15 )
 
+[node name="WeatherTimer" type="Timer" parent="."]
+wait_time = 10.0
+
 [connection signal="timeout" from="ActionSwitchTimer" to="." method="_on_ActionSwitchTimer_timeout"]
 [connection signal="timeout" from="ActionOnWallSwitchTimer" to="." method="_on_ActionOnWallSwitchTimer_timeout"]
+[connection signal="timeout" from="WeatherTimer" to="." method="_on_WeatherTimer_timeout"]
