@@ -21,7 +21,9 @@ _global_script_class_icons={
 [application]
 
 config/name="Pet"
-run/main_scene="res://Function/World/World.tscn"
+run/main_scene="res://World.tscn"
+boot_splash/show_image=false
+config/icon="res://icon.png"
 
 [display]
 
