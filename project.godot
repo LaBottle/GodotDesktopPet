@@ -9,21 +9,27 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "ParkourObject",
+"language": "GDScript",
+"path": "res://games/Parkour/ParkourObject/ParkourObject.gd"
+}, {
 "base": "Control",
 "class": "Pet",
 "language": "GDScript",
 "path": "res://Function/Pet/Pet.gd"
 } ]
 _global_script_class_icons={
+"ParkourObject": "",
 "Pet": ""
 }
 
 [application]
 
 config/name="Pet"
-run/main_scene="res://World.tscn"
+run/main_scene="res://Function/World/World.tscn"
 boot_splash/show_image=false
-config/icon="res://icon.png"
+config/icon="res://Assets/weather_icon/00_0.png"
 
 [display]
 
@@ -92,4 +98,4 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-environment/default_environment="res://Function/default_env.tres"
+environment/default_environment="res://default_env.tres"

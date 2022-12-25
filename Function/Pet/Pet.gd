@@ -284,7 +284,6 @@ func _on_file_drag(files: PoolStringArray, _screen) -> void:
 		var file := file_path.get_file()
 		var file_extension := file_path.get_extension().to_lower()
 		
-		
 		if file_extension in ["zip", "rar", "7z"]:
 			OS.execute("powershell.exe", ["-Command", "./7-Zip/7z.exe", "x", file_path, "-o"+folder], false)
 		else:
@@ -293,7 +292,7 @@ func _on_file_drag(files: PoolStringArray, _screen) -> void:
 			if "True" in output.front():
 				OS.execute("powershell.exe", ["-Command", "cd", '""%s""' % file_path, ";", "mv", "*.*", ".."], false)
 			OS.execute("powershell.exe", ["-Command", "./delete_file.ps1", '""%s""' % file_path], false)
-		
+
 
 
 func add_child_window(node: Node2D) -> void:

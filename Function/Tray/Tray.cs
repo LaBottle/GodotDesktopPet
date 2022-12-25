@@ -1,8 +1,11 @@
 using Godot;
 using System;
+using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Threading.Tasks;
+using Directory = System.IO.Directory;
+using File = System.IO.File;
 
 // ReSharper disable once CheckNamespace
 public class Tray : Node {
@@ -34,11 +37,13 @@ public class Tray : Node {
     public MenuItem VarietyWhiteItem { get; set; } = new MenuItem();
 
     public override void _Ready() {
+        
+
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         Menu.MenuItems.AddRange(new [] {MoodValueItem, EmotionalThresholdItem, VarietyChangeItem, ExitItem});
 
-        MoodValueItem.Text = $"心情: {GetParent().GetNode("Pet").Get("mood")}";
+        MoodValueItem.Text = $"心情: {GetNode("../Pet").Get("mood")}";
 
         EmotionalThresholdItem.Text = "情绪阈值";
         EmotionalThresholdItem.MenuItems.AddRange(new[] {
@@ -49,7 +54,8 @@ public class Tray : Node {
         LowEmotionalThresholdItem.RadioCheck = true;
         MediumEmotionalThresholdItem.RadioCheck = true;
         HighEmotionalThresholdItem.RadioCheck = true;
-        switch ((EmotionalThreshold) GetParent().GetNode("Pet").Get("emotional_threshold")) {
+        
+        switch ((EmotionalThreshold) GetNode("../Pet").Get("emotional_threshold")) {
             case EmotionalThreshold.Low:
                 LowEmotionalThresholdItem.Checked = true;
                 break;
@@ -80,7 +86,7 @@ public class Tray : Node {
         VarietyBlackItem.RadioCheck = true;
         VarietyBrownItem.RadioCheck = true;
         VarietyWhiteItem.RadioCheck = true;
-        switch ((Variety) GetParent().GetNode("Pet").Get("pet_variety")) {
+        switch ((Variety) GetNode("../Pet").Get("pet_variety")) {
             case Variety.Black:
                 VarietyBlackItem.Checked = true;
                 break;
@@ -111,6 +117,8 @@ public class Tray : Node {
         Notify.Text = "GodotDesktopPet";
         Notify.ContextMenu = Menu;
         Notify.Visible = true;
+        
+                
         Task.Run(() => {
             try {
                 Application.Run();
@@ -189,9 +197,9 @@ public class Tray : Node {
             HighEmotionalThresholdItem.Checked = true;
         }
         else {
-            GD.PushError("ArgumentException: `sender` is not included in `VarietyChangeItem`");
+            GD.PushError("ArgumentException: `sender` is not included in `EmotionalThresholdItem`");
             throw new ArgumentException(
-                "ArgumentException: `sender` is not included in `VarietyChangeItem`");
+                "ArgumentException: `sender` is not included in `EmotionalThresholdItem`");
         }
 
         GetNode("../Pet").Call("set_emotional_threshold", emotionalThreshold);

@@ -10,6 +10,7 @@ func _ready() -> void:
 #	OS.execute("powershell.exe", ["-Command", "dir"], true, output)
 #	print(output.front().left(100))
 	get_viewport().transparent_bg = true
+	
 
 
 
