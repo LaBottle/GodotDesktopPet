@@ -29,7 +29,7 @@ _global_script_class_icons={
 config/name="Pet"
 run/main_scene="res://Function/World/World.tscn"
 boot_splash/show_image=false
-config/icon="res://Assets/weather_icon/00_0.png"
+config/icon="res://Assets/cat/black_land_8fps/1.png"
 
 [display]
 
