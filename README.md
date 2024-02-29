@@ -8,3 +8,5 @@ A simple desktop pet made by Godot and Gdscript.
 * You can drag the Pet.
 * The Pet has a mood value(increase by moving, decrease by draging), which affects the Pet behavior.
 * You can change the Pet appearance via Windows Trap. (This only works on Windows&dev version)
+
+![GodotDesktopPet-ezgif com-video-to-gif-converter](https://github.com/LaBottle/GodotDesktopPet/assets/97742527/5c685cdb-a6ae-447e-9de7-5d6a7363171a)
